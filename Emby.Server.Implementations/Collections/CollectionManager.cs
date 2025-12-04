@@ -303,6 +303,13 @@ namespace Emby.Server.Implementations.Collections
                 RefreshPriority.High);
 
             ItemsRemovedFromCollection?.Invoke(this, new CollectionModifiedEventArgs(collection, itemList));
+
+            // If the collection has 1 or fewer items after removal, delete the collection
+            if (collection.LinkedChildren.Length <= 1)
+            {
+                _logger.LogInformation("Collection '{CollectionName}' has {ItemCount} item(s) remaining, deleting the collection", collection.Name, collection.LinkedChildren.Length);
+                _libraryManager.DeleteItem(collection, new DeleteOptions { DeleteFileLocation = true });
+            }
         }
 
         /// <inheritdoc />
