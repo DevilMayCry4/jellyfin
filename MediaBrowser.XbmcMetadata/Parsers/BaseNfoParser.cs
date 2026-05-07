@@ -575,7 +575,7 @@ namespace MediaBrowser.XbmcMetadata.Parsers
 
                             foreach (var p in parts)
                             {
-                                item.AddTag(p);
+                                item.AddGenre(p);
                             }
                         }
 
@@ -587,7 +587,7 @@ namespace MediaBrowser.XbmcMetadata.Parsers
                     var tag = reader.ReadNormalizedString();
                     if (!string.IsNullOrEmpty(tag))
                     {
-                        item.AddGenre(tag);
+                        item.AddTag(tag);
                     }
 
                     break;
