@@ -122,8 +122,9 @@ public class GenreCollectionTask : IScheduledTask
 
                 // Sync items: Add missing movies
                 var currentItemIds = boxSet.LinkedChildren
-                    .Where(c => c.ItemId.HasValue)
-                    .Select(c => c.ItemId.Value)
+                    .Select(c => c.ItemId)
+                    .Where(id => id.HasValue)
+                    .Select(id => id!.Value)
                     .ToHashSet();
 
                 var moviesToAdd = movieIds.Where(id => !currentItemIds.Contains(id)).ToList();
@@ -181,6 +182,6 @@ public class GenreCollectionTask : IScheduledTask
     /// <inheritdoc />
     public IEnumerable<TaskTriggerInfo> GetDefaultTriggers()
     {
-        return [new TaskTriggerInfo { Type = TaskTriggerInfo.TriggerDaily, TimeOfDayTicks = TimeSpan.FromHours(2).Ticks }];
+        return [new TaskTriggerInfo { Type = TaskTriggerInfoType.DailyTrigger, TimeOfDayTicks = TimeSpan.FromHours(2).Ticks }];
     }
 }
